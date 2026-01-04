@@ -2,6 +2,7 @@ const std = @import("std");
 const cpu_mod = @import("cpu/cpu.zig");
 const isa = @import("cpu/isa.zig");
 const assembler = @import("assembler/assembler.zig");
+const trace = @import("cpu/trace.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -16,6 +17,7 @@ pub fn main() !void {
 
     while (!cpu.halted) {
         const op = program[cpu.pc];
+        trace.print(cpu.pc, program);
 
         switch (op) {
             isa.HALT => cpu.halted = true,
