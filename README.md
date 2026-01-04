@@ -1,24 +1,81 @@
-# Tiny MCU Emulator (v0.1)
+# Tiny MCU Emulator
 
-A minimal, inspectable software model of a custom microcontroller.
+A minimal, inspectable software model of a custom microcontroller, built from first principles.
 
-This project implements a simple CPU with:
-- 8 general-purpose registers
+This project defines a complete MCU design workflow:
+- a custom instruction set
+- a CPU execution model
+- a two-pass assembler
+- instruction tracing and diagnostics
+
+The goal is correctness, clarity, and architectural understanding — not performance.
+
+---
+
+## Architecture Overview
+
+### CPU
+- 8 general-purpose 8-bit registers (R0–R7)
+- Program Counter (PC)
+- Zero flag (Z)
 - 256 bytes of RAM
-- Custom instruction set
 - Fetch–decode–execute loop
-- Conditional branching
 
-## Instruction Set
-- MOV, ADD, SUB
-- LD, ST
-- JMP, JZ
-- NOP, HALT
+### Instruction Set
+- Data movement: `MOV`, `LD`, `ST`
+- Arithmetic: `ADD`, `SUB`
+- Control flow: `JMP`, `JZ`
+- System: `HALT`
 
-## Purpose
-This emulator exists to:
-- Define and test an instruction set
-- Validate execution semantics
-- Serve as a bridge to a future custom MCU implementation
+---
 
-No optimization. No cycle accuracy. Only correctness.
+## Toolchain
+
+### Assembler
+- Two-pass assembler
+- Label resolution
+- Line-numbered error diagnostics
+- Human-readable assembly syntax
+
+### Tracing
+- Instruction-level execution trace
+- Disassembly-style output
+- Register and control flow visibility
+
+---
+
+## Example Assembly
+
+```asm
+MOV R0, 3
+MOV R1, 1
+
+loop:
+SUB R0, R1
+JZ end
+JMP loop
+
+end:
+HALT
+````
+
+---
+
+## Why This Exists
+
+Most projects focus on *using* microcontrollers.
+
+This project focuses on *designing* one.
+
+It serves as a foundation for:
+
+* custom MCU design
+* FPGA / RTL work
+* firmware–hardware co-design
+* emulator-driven development
+
+---
+
+## Status
+
+v1.0 — feature-complete minimal MCU platform.
