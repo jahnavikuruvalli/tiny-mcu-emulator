@@ -1,0 +1,4 @@
+MOV R0, 10
+ST R0, 32
+LD R1, 32
+HALT
