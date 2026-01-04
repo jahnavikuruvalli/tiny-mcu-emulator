@@ -1,10 +1,4 @@
-MOV R0, 3
-MOV R1, 1
-
-loop:
-SUB R0, R1
-JZ end
-JMP loop
-
-end:
+MOV R0, 10
+ST R0, 32
+LD R1, 32
 HALT

@@ -30,11 +30,34 @@ pub fn main() !void {
                 cpu.pc += 3;
             },
 
+            isa.ADD => {
+                const rd = program[cpu.pc + 1];
+                const rs = program[cpu.pc + 2];
+                cpu.regs[rd] +%= cpu.regs[rs];
+                cpu.zf = (cpu.regs[rd] == 0);
+                cpu.pc += 3;
+            },
+
             isa.SUB => {
                 const rd = program[cpu.pc + 1];
                 const rs = program[cpu.pc + 2];
                 cpu.regs[rd] -%= cpu.regs[rs];
                 cpu.zf = (cpu.regs[rd] == 0);
+                cpu.pc += 3;
+            },
+
+            isa.LD => {
+                const r = program[cpu.pc + 1];
+                const addr = program[cpu.pc + 2];
+                cpu.regs[r] = cpu.ram[addr];
+                cpu.zf = (cpu.regs[r] == 0);
+                cpu.pc += 3;
+            },
+
+            isa.ST => {
+                const r = program[cpu.pc + 1];
+                const addr = program[cpu.pc + 2];
+                cpu.ram[addr] = cpu.regs[r];
                 cpu.pc += 3;
             },
 
@@ -47,7 +70,10 @@ pub fn main() !void {
                 cpu.pc = program[cpu.pc + 1];
             },
 
-            else => unreachable,
+            else => {
+                std.debug.print("UNKNOWN OPCODE {x} at PC={d}\n", .{ op, cpu.pc });
+                break;
+            },
         }
     }
 

@@ -49,7 +49,7 @@ fn instructionSize(line: []const u8) u8 {
     if (std.mem.startsWith(u8, line, "HALT")) return 1;
     if (std.mem.startsWith(u8, line, "JMP")) return 2;
     if (std.mem.startsWith(u8, line, "JZ")) return 2;
-    return 3;
+    return 3; // MOV, ADD, SUB, LD, ST
 }
 
 fn emitInstruction(
@@ -94,6 +94,14 @@ fn emitInstruction(
         try out.append(allocator, isa.SUB);
         try out.append(allocator, r1);
         try out.append(allocator, parseRegister(r2));
+    } else if (std.mem.eql(u8, instr, "LD")) {
+        try out.append(allocator, isa.LD);
+        try out.append(allocator, r1);
+        try out.append(allocator, try std.fmt.parseInt(u8, r2, 10));
+    } else if (std.mem.eql(u8, instr, "ST")) {
+        try out.append(allocator, isa.ST);
+        try out.append(allocator, r1);
+        try out.append(allocator, try std.fmt.parseInt(u8, r2, 10));
     } else {
         asmerr.report(line_no, "invalid instruction");
         return asmerr.AsmError.InvalidInstruction;

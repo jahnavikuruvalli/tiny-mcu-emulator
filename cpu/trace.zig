@@ -29,6 +29,14 @@ pub fn print(pc: u8, program: []const u8) void {
             std.debug.print("PC={d}: HALT\n", .{pc});
         },
 
+        isa.LD => {
+            std.debug.print("PC={d}: LD R{d}, {d}\n", .{ pc, program[pc + 1], program[pc + 2] });
+        },
+
+        isa.ST => {
+            std.debug.print("PC={d}: ST R{d}, {d}\n", .{ pc, program[pc + 1], program[pc + 2] });
+        },
+
         else => {
             std.debug.print("PC={d}: UNKNOWN {x}\n", .{ pc, op });
         },
