@@ -70,6 +70,20 @@ pub fn main() !void {
                 cpu.pc = program[cpu.pc + 1];
             },
 
+            isa.PUSH => {
+                const r = program[cpu.pc + 1];
+                cpu.ram[cpu.sp] = cpu.regs[r];
+                cpu.sp -%= 1;
+                cpu.pc += 2;
+            },
+
+            isa.POP => {
+                const r = program[cpu.pc + 1];
+                cpu.sp +%= 1;
+                cpu.regs[r] = cpu.ram[cpu.sp];
+                cpu.pc += 2;
+            },
+
             else => {
                 std.debug.print("UNKNOWN OPCODE {x} at PC={d}\n", .{ op, cpu.pc });
                 break;
